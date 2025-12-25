@@ -255,6 +255,22 @@ export default function SettingsScreen() {
                 textColor="#000000"
                 themeVariant="light"
               />
+              <View style={styles.timePickerButtons}>
+                <TouchableOpacity
+                  style={styles.timePickerCancelButton}
+                  onPress={handleTimeCancel}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.timePickerCancelText}>İptal</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.timePickerSaveButton}
+                  onPress={handleTimeSave}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.timePickerSaveText}>Kaydet</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         </View>
