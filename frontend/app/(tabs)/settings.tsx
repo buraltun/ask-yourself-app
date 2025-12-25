@@ -295,7 +295,7 @@ export default function SettingsScreen() {
           )}
         </View>
 
-        {user && (
+        {currentUser && (
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Ionicons name="person-circle" size={24} color="#007AFF" />
@@ -303,7 +303,7 @@ export default function SettingsScreen() {
             </View>
 
             <View style={styles.profileInfo}>
-              {user.isAnonymous ? (
+              {currentUser.isAnonymous ? (
                 <>
                   <View style={styles.profileRow}>
                     <Ionicons name="person-outline" size={20} color="#666" />
@@ -315,16 +315,16 @@ export default function SettingsScreen() {
                 </>
               ) : (
                 <>
-                  {user.fullName && (
+                  {currentUser.fullName && (
                     <View style={styles.profileRow}>
                       <Ionicons name="person" size={20} color="#007AFF" />
-                      <Text style={styles.profileValue}>{user.fullName}</Text>
+                      <Text style={styles.profileValue}>{currentUser.fullName}</Text>
                     </View>
                   )}
-                  {user.email && (
+                  {currentUser.email && (
                     <View style={styles.profileRow}>
                       <Ionicons name="mail" size={20} color="#007AFF" />
-                      <Text style={styles.profileValue}>{user.email}</Text>
+                      <Text style={styles.profileValue}>{currentUser.email}</Text>
                     </View>
                   )}
                 </>
