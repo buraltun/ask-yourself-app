@@ -9,6 +9,7 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { QuestionCard } from '../../components/QuestionCard';
@@ -32,16 +33,22 @@ export default function HomeScreen() {
 
   useFocusEffect(
     React.useCallback(() => {
+      // Her ekrana geldiğinde veriyi yeniden yükle
       loadTodayAnswer();
     }, [])
   );
 
   const loadTodayAnswer = async () => {
     try {
+      setLoading(true);
       const todayAnswer = await getTodayAnswer();
       if (todayAnswer) {
         setAnswer(todayAnswer.answer);
         setHasAnswered(true);
+      } else {
+        // Cevap yoksa temizle
+        setAnswer('');
+        setHasAnswered(false);
       }
     } catch (error) {
       console.error('Error loading today answer:', error);
