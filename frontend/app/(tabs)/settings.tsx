@@ -228,15 +228,82 @@ export default function SettingsScreen() {
           )}
 
           {showTimePicker && (
-            <DateTimePicker
-              value={selectedTime}
-              mode="time"
-              is24Hour={true}
-              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-              onChange={handleTimeChange}
-            />
+            <View style={styles.timePickerContainer}>
+              <DateTimePicker
+                value={selectedTime}
+                mode="time"
+                is24Hour={true}
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                onChange={handleTimeChange}
+                textColor="#000000"
+                themeVariant="light"
+              />
+            </View>
           )}
         </View>
+
+        {user && (
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="person-circle" size={24} color="#007AFF" />
+              <Text style={styles.sectionTitle}>Profil</Text>
+            </View>
+
+            <View style={styles.profileInfo}>
+              {user.isAnonymous ? (
+                <>
+                  <View style={styles.profileRow}>
+                    <Ionicons name="person-outline" size={20} color="#666" />
+                    <Text style={styles.profileLabel}>Misafir Kullanıcı</Text>
+                  </View>
+                  <Text style={styles.profileDescription}>
+                    Verileriniz sadece bu cihazda saklanıyor
+                  </Text>
+                </>
+              ) : (
+                <>
+                  {user.fullName && (
+                    <View style={styles.profileRow}>
+                      <Ionicons name="person" size={20} color="#007AFF" />
+                      <Text style={styles.profileValue}>{user.fullName}</Text>
+                    </View>
+                  )}
+                  {user.email && (
+                    <View style={styles.profileRow}>
+                      <Ionicons name="mail" size={20} color="#007AFF" />
+                      <Text style={styles.profileValue}>{user.email}</Text>
+                    </View>
+                  )}
+                </>
+              )}
+            </View>
+
+            <TouchableOpacity
+              style={styles.signOutButton}
+              onPress={async () => {
+                Alert.alert(
+                  'Çıkış Yap',
+                  'Çıkış yapmak istediğinden emin misin? Verileriniz cihazda kalacak.',
+                  [
+                    { text: 'İptal', style: 'cancel' },
+                    {
+                      text: 'Çıkış Yap',
+                      style: 'destructive',
+                      onPress: async () => {
+                        await signOut();
+                        router.replace('/auth');
+                      },
+                    },
+                  ]
+                );
+              }}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="log-out-outline" size={20} color="#FF3B30" />
+              <Text style={styles.signOutButtonText}>Çıkış Yap</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
