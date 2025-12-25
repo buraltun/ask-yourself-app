@@ -15,3 +15,10 @@ export interface NotificationSettings {
   enabled: boolean;
   time: string;
 }
+
+export interface User {
+  id: string;
+  email: string | null;
+  fullName: string | null;
+  isAnonymous: boolean;
+}
