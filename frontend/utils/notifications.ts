@@ -90,6 +90,13 @@ export const getScheduledNotifications = async () => {
 
 export const testNotification = async (): Promise<void> => {
   try {
+    // Web'de bildirimler tam desteklenmediği için platform kontrolü yapıyoruz
+    if (Platform.OS === 'web') {
+      // Web'de sadece console'a yazdırıyoruz
+      console.log('Test notification would be sent on native device');
+      return;
+    }
+    
     await Notifications.scheduleNotificationAsync({
       content: {
         title: '🧪 Test Bildirimi',
@@ -102,5 +109,6 @@ export const testNotification = async (): Promise<void> => {
     });
   } catch (error) {
     console.error('Error sending test notification:', error);
+    throw error;
   }
 };
