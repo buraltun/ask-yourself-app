@@ -21,6 +21,8 @@ import {
   getScheduledNotifications,
 } from '../../utils/notifications';
 import { NotificationSettings } from '../../types';
+import { useUser } from '../../contexts/UserContext';
+import { useRouter } from 'expo-router';
 
 export default function SettingsScreen() {
   const [settings, setSettings] = useState<NotificationSettings>({
