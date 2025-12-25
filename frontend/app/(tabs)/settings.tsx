@@ -130,6 +130,16 @@ export default function SettingsScreen() {
   };
 
   const handleTestNotification = async () => {
+    // Web'de bildirimler çalışmadığı için uyarı göster
+    if (Platform.OS === 'web') {
+      Alert.alert(
+        'Web Sınırlaması',
+        'Test bildirimi gerçek cihazda (Expo Go) çalışır. Web preview\'da bildirimler desteklenmez.\n\nGerçek cihazda test etmek için:\n1. Expo Go uygulamasını aç\n2. QR kodu tara\n3. Bu butona tekrar bas',
+        [{ text: 'Anladım' }]
+      );
+      return;
+    }
+    
     const hasPermission = await requestNotificationPermissions();
     
     if (!hasPermission) {
