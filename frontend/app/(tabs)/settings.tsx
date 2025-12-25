@@ -192,8 +192,9 @@ export default function SettingsScreen() {
             <Switch
               value={settings.enabled}
               onValueChange={handleToggleNotifications}
-              trackColor={{ false: '#e0e0e0', true: '#007AFF' }}
-              thumbColor={Platform.OS === 'ios' ? '#fff' : '#fff'}
+              trackColor={{ false: '#E5E5EA', true: '#34C759' }}
+              thumbColor={'#FFFFFF'}
+              ios_backgroundColor="#E5E5EA"
             />
           </View>
 
