@@ -52,6 +52,18 @@ export default function SettingsScreen() {
     React.useCallback(() => {
       // Ekrana her geldiğinde ayarları yeniden yükle
       loadSettings();
+      
+      // AsyncStorage'dan direkt oku ve logla
+      AsyncStorage.getItem('@daily_journal_user').then(data => {
+        console.log('📱 AsyncStorage User Data:', data);
+        if (data) {
+          const userData = JSON.parse(data);
+          console.log('👤 Parsed User:', userData);
+          setCurrentUser(userData);
+        }
+      });
+      
+      console.log('🔄 Context User:', user);
       setCurrentUser(user);
     }, [user])
   );
