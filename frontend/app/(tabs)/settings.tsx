@@ -37,16 +37,23 @@ export default function SettingsScreen() {
   const [selectedTime, setSelectedTime] = useState(new Date());
   const { user, signOut } = useUser();
   const router = useRouter();
+  const [currentUser, setCurrentUser] = useState(user);
 
   useEffect(() => {
     loadSettings();
   }, []);
 
+  // User bilgisi değiştiğinde güncelle
+  useEffect(() => {
+    setCurrentUser(user);
+  }, [user]);
+
   useFocusEffect(
     React.useCallback(() => {
       // Ekrana her geldiğinde ayarları yeniden yükle
       loadSettings();
-    }, [])
+      setCurrentUser(user);
+    }, [user])
   );
 
   const loadSettings = async () => {
