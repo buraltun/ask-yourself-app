@@ -388,10 +388,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  content: {
-    flex: 1,
-    padding: 16,
-  },
   section: {
     backgroundColor: '#fff',
     borderRadius: 12,
