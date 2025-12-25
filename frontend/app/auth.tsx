@@ -85,10 +85,10 @@ export default function AuthScreen() {
             <Ionicons name="journal" size={80} color="#007AFF" />
           </View>
           
-          <Text style={styles.title}>Günlük Tek Soru</Text>
+          <Text style={styles.title}>Ask Yourself</Text>
           <Text style={styles.subtitle}>
-            Her gün sadece bir soru, sadece bir cevap.
-            Düşüncelerini kaydet, kendini keşfet.
+            One question a day. One answer at a time.
+            Reflect, write, and discover yourself.
           </Text>
 
           <View style={styles.webNotice}>
