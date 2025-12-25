@@ -7,10 +7,19 @@ import {
   TouchableOpacity,
   Platform,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { getNotificationSettings, saveNotificationSettings } from '../../utils/storage';
+import {
+  requestNotificationPermissions,
+  scheduleDailyNotification,
+  cancelAllNotifications,
+  testNotification,
+  getScheduledNotifications,
+} from '../../utils/notifications';
 import { NotificationSettings } from '../../types';
 
 export default function SettingsScreen() {
@@ -19,6 +28,8 @@ export default function SettingsScreen() {
     time: '20:00',
   });
   const [loading, setLoading] = useState(true);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [selectedTime, setSelectedTime] = useState(new Date());
 
   useEffect(() => {
     loadSettings();
@@ -28,6 +39,12 @@ export default function SettingsScreen() {
     try {
       const saved = await getNotificationSettings();
       setSettings(saved);
+      
+      // Parse time string to Date
+      const [hours, minutes] = saved.time.split(':').map(Number);
+      const date = new Date();
+      date.setHours(hours, minutes, 0, 0);
+      setSelectedTime(date);
     } catch (error) {
       console.error('Error loading settings:', error);
     } finally {
@@ -36,35 +53,111 @@ export default function SettingsScreen() {
   };
 
   const handleToggleNotifications = async (value: boolean) => {
-    const newSettings = { ...settings, enabled: value };
-    setSettings(newSettings);
-    try {
-      await saveNotificationSettings(newSettings);
-      if (value) {
+    if (value) {
+      // Request permission first
+      const hasPermission = await requestNotificationPermissions();
+      
+      if (!hasPermission) {
         Alert.alert(
-          'Bildirimler Aktif',
+          'İzin Gerekli',
+          'Bildirimler için izin vermelisin. Lütfen ayarlardan bildirimlere izin ver.',
+          [{ text: 'Tamam' }]
+        );
+        return;
+      }
+
+      // Schedule notification
+      const [hours, minutes] = settings.time.split(':').map(Number);
+      const notificationId = await scheduleDailyNotification(hours, minutes);
+      
+      if (notificationId) {
+        const newSettings = { ...settings, enabled: true };
+        setSettings(newSettings);
+        await saveNotificationSettings(newSettings);
+        
+        Alert.alert(
+          '✅ Bildirimler Aktif',
           `Her gün saat ${settings.time} hatırlatma alacaksın.`,
           [{ text: 'Tamam' }]
         );
+      } else {
+        Alert.alert(
+          'Hata',
+          'Bildirim ayarlanamadı. Lütfen tekrar dene.',
+          [{ text: 'Tamam' }]
+        );
       }
-    } catch (error) {
-      Alert.alert('Hata', 'Ayarlar kaydedilemedi.');
+    } else {
+      // Disable notifications
+      await cancelAllNotifications();
+      const newSettings = { ...settings, enabled: false };
+      setSettings(newSettings);
+      await saveNotificationSettings(newSettings);
+      
+      Alert.alert(
+        'Bildirimler Kapatıldı',
+        'Artık günlük hatırlatma almayacaksın.',
+        [{ text: 'Tamam' }]
+      );
     }
   };
 
-  const handleTimeChange = () => {
+  const handleTimeChange = (event: any, selectedDate?: Date) => {
+    setShowTimePicker(Platform.OS === 'ios');
+    
+    if (selectedDate) {
+      setSelectedTime(selectedDate);
+      
+      // Update settings
+      const hours = selectedDate.getHours();
+      const minutes = selectedDate.getMinutes();
+      const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+      
+      const newSettings = { ...settings, time: timeString };
+      setSettings(newSettings);
+      saveNotificationSettings(newSettings);
+      
+      // If notifications are enabled, reschedule
+      if (settings.enabled) {
+        scheduleDailyNotification(hours, minutes);
+        Alert.alert(
+          'Saat Güncellendi',
+          `Yeni hatırlatma saati: ${timeString}`,
+          [{ text: 'Tamam' }]
+        );
+      }
+    }
+  };
+
+  const handleTestNotification = async () => {
+    const hasPermission = await requestNotificationPermissions();
+    
+    if (!hasPermission) {
+      Alert.alert(
+        'İzin Gerekli',
+        'Test bildirimi için izin vermelisin.',
+        [{ text: 'Tamam' }]
+      );
+      return;
+    }
+
+    await testNotification();
     Alert.alert(
-      'Bildirim Saati',
-      'Bildirim saati özelliği yakında eklenecek!',
+      'Test Bildirimi Gönderildi',
+      '2 saniye içinde bildirim alacaksın.',
       [{ text: 'Tamam' }]
     );
+  };
+
+  const showTimePickerModal = () => {
+    setShowTimePicker(true);
   };
 
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <Text>Yükleniyor...</Text>
+          <ActivityIndicator size="large" color="#007AFF" />
         </View>
       </SafeAreaView>
     );
@@ -95,17 +188,38 @@ export default function SettingsScreen() {
           </View>
 
           {settings.enabled && (
-            <TouchableOpacity
-              style={styles.settingItem}
-              onPress={handleTimeChange}
-              activeOpacity={0.7}
-            >
-              <View style={styles.settingInfo}>
-                <Text style={styles.settingLabel}>Hatırlatma Saati</Text>
-                <Text style={styles.settingValue}>{settings.time}</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#ccc" />
-            </TouchableOpacity>
+            <>
+              <TouchableOpacity
+                style={styles.settingItem}
+                onPress={showTimePickerModal}
+                activeOpacity={0.7}
+              >
+                <View style={styles.settingInfo}>
+                  <Text style={styles.settingLabel}>Hatırlatma Saati</Text>
+                  <Text style={styles.settingValue}>{settings.time}</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={20} color="#ccc" />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.settingItem, styles.testButton]}
+                onPress={handleTestNotification}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="flask" size={20} color="#007AFF" />
+                <Text style={styles.testButtonText}>Test Bildirimi Gönder</Text>
+              </TouchableOpacity>
+            </>
+          )}
+
+          {showTimePicker && (
+            <DateTimePicker
+              value={selectedTime}
+              mode="time"
+              is24Hour={true}
+              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+              onChange={handleTimeChange}
+            />
           )}
         </View>
 
@@ -194,6 +308,20 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#007AFF',
     fontWeight: '600',
+  },
+  testButton: {
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 16,
+    backgroundColor: '#f8f9ff',
+    borderRadius: 8,
+    marginTop: 8,
+    borderBottomWidth: 0,
+  },
+  testButtonText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#007AFF',
   },
   infoItem: {
     flexDirection: 'row',
