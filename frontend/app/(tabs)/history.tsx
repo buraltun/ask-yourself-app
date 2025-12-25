@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import { getAllAnswers, deleteAnswer } from '../../utils/storage';
 import { formatDisplayDate, formatShortDate } from '../../utils/dateHelper';
 import { Answer } from '../../types';
 import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from 'expo-router';
 
 export default function HistoryScreen() {
   const [answers, setAnswers] = useState<Answer[]>([]);
@@ -21,7 +21,7 @@ export default function HistoryScreen() {
   const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null);
 
   useFocusEffect(
-    useCallback(() => {
+    React.useCallback(() => {
       loadAnswers();
     }, [])
   );
