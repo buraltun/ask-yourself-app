@@ -434,4 +434,52 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     textAlign: 'center',
   },
+  timePickerContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 12,
+  },
+  profileInfo: {
+    paddingVertical: 12,
+  },
+  profileRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 8,
+  },
+  profileLabel: {
+    fontSize: 16,
+    color: '#666',
+    fontWeight: '500',
+  },
+  profileValue: {
+    fontSize: 16,
+    color: '#000',
+    fontWeight: '500',
+  },
+  profileDescription: {
+    fontSize: 13,
+    color: '#999',
+    marginTop: 8,
+    fontStyle: 'italic',
+  },
+  signOutButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    padding: 14,
+    marginTop: 12,
+    borderRadius: 8,
+    backgroundColor: '#FFF5F5',
+    borderWidth: 1,
+    borderColor: '#FFE5E5',
+  },
+  signOutButtonText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#FF3B30',
+  },
 });
