@@ -141,17 +141,29 @@ frontend:
         agent: "main"
         comment: "Geçmiş cevaplar tarih sırasıyla listeleniyor, detay görüntüleme ve silme çalışıyor"
 
-  - task: "Ayarlar ekranı - bildirim toggle"
+  - task: "Ayarlar ekranı - bildirim toggle ve zaman seçici"
     implemented: true
     working: true
     file: "app/(tabs)/settings.tsx"
     stuck_count: 0
-    priority: "medium"
+    priority: "high"
     needs_retesting: false
     status_history:
       - working: true
         agent: "main"
-        comment: "Bildirim toggle ve ayarlar gösteriliyor. Gerçek bildirim PHASE 3'te eklenecek"
+        comment: "Bildirim toggle, zaman seçici ve test bildirimi entegre edildi. expo-notifications kullanılıyor"
+      
+  - task: "Bildirim sistemi entegrasyonu (expo-notifications)"
+    implemented: true
+    working: true
+    file: "utils/notifications.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Bildirim izinleri, günlük zamanlanmış bildirimler, test bildirimi tam entegre. Android ve iOS desteği var"
 
   - task: "50 adet Türkçe soru listesi"
     implemented: true
