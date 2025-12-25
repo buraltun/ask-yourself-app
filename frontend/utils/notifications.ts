@@ -42,7 +42,7 @@ export const requestNotificationPermissions = async (): Promise<boolean> => {
   }
 };
 
-export const scheduleDaily Notification = async (hour: number, minute: number): Promise<string | null> => {
+export const scheduleDailyNotification = async (hour: number, minute: number): Promise<string | null> => {
   try {
     // Cancel all existing notifications first
     await Notifications.cancelAllScheduledNotificationsAsync();
