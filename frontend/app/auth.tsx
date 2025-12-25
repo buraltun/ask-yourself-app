@@ -65,10 +65,12 @@ export default function AuthScreen() {
     try {
       setLoading(true);
       await continueAsGuest();
-      router.replace('/(tabs)');
+      // Use replace with timeout to ensure navigation works
+      setTimeout(() => {
+        router.replace('/(tabs)');
+      }, 100);
     } catch (error) {
       Alert.alert('Hata', 'Bir hata oluştu. Lütfen tekrar dene.');
-    } finally {
       setLoading(false);
     }
   };
