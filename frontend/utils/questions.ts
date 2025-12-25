@@ -1,0 +1,61 @@
+import { Question } from '../types';
+
+export const QUESTIONS: Question[] = [
+  { id: 1, text: 'Bugün seni mutlu eden bir şey ne oldu?' },
+  { id: 2, text: 'Bugün hangi konuda kendini geliştirdin?' },
+  { id: 3, text: 'Bugün birine nasıl yardım ettin veya kimlere iyilik yaptın?' },
+  { id: 4, text: 'Bugün seni en çok düşündüren şey neydi?' },
+  { id: 5, text: 'Bugün hangi konuda minnettar hissediyorsun?' },
+  { id: 6, text: 'Bugün öğrendiğin yeni bir şey var mı?' },
+  { id: 7, text: 'Bugün hangi hedefine yaklaştın?' },
+  { id: 8, text: 'Bugün seni güldüren bir an oldu mu?' },
+  { id: 9, text: 'Bugün karşılaştığın en büyük zorluk neydi ve nasıl üstesinden geldin?' },
+  { id: 10, text: 'Bugün kendine nasıl zaman ayırdın?' },
+  { id: 11, text: 'Bugün seni şaşırtan bir şey oldu mu?' },
+  { id: 12, text: 'Bugün hangi duyguyu en yoğun yaşadın?' },
+  { id: 13, text: 'Bugün biri sana ne söyledi ki o sözler aklında kaldı?' },
+  { id: 14, text: 'Bugün seni huzurlu hissettiren bir an var mıydı?' },
+  { id: 15, text: 'Bugün hangi alışkanlığını devam ettirdin?' },
+  { id: 16, text: 'Bugün seni yorgun hissettiren şey ne oldu?' },
+  { id: 17, text: 'Bugün kendini nasıl ifade ettin?' },
+  { id: 18, text: 'Bugün hangi konuda karar verdin?' },
+  { id: 19, text: 'Bugün doğayla veya çevrenle nasıl etkileşim kurdun?' },
+  { id: 20, text: 'Bugün seni heyecanlandıran bir düşünce neydi?' },
+  { id: 21, text: 'Bugün neleri başardın, küçük veya büyük?' },
+  { id: 22, text: 'Bugün kendine hangi konuda sabırlı davrandın?' },
+  { id: 23, text: 'Bugün seni rahatlatmak için ne yaptın?' },
+  { id: 24, text: 'Bugün hangi anıyı saklamak isterdin?' },
+  { id: 25, text: 'Bugün seni motive eden şey neydi?' },
+  { id: 26, text: 'Bugün bir şeyleri farklı yapsaydın ne yapardın?' },
+  { id: 27, text: 'Bugün seni destekleyen kim oldu?' },
+  { id: 28, text: 'Bugün hangi konuda kendini şanslı hissettin?' },
+  { id: 29, text: 'Bugün bedenin sana ne söyledi?' },
+  { id: 30, text: 'Bugün seni en çok etkileyen görüntü, ses veya koku neydi?' },
+  { id: 31, text: 'Bugün yarın için hangi niyeti koydun?' },
+  { id: 32, text: 'Bugün hangi konuda daha bilinçli oldun?' },
+  { id: 33, text: 'Bugün seni güçlü hissettiren an neydi?' },
+  { id: 34, text: 'Bugün hangi düşünceden vazgeçtin?' },
+  { id: 35, text: 'Bugün seni sakinleştiren bir şey ne oldu?' },
+  { id: 36, text: 'Bugün kendine hangi konuda nazik davrandın?' },
+  { id: 37, text: 'Bugün seni sıcak hissettiren bir jeste maruz kaldın mı?' },
+  { id: 38, text: 'Bugün nelerden vazgeçebildin?' },
+  { id: 39, text: 'Bugün hangi değerine sadık kaldın?' },
+  { id: 40, text: 'Bugün seni meraklandıran bir konu neydi?' },
+  { id: 41, text: 'Bugün seni gülümsetmeyi başaran küçük bir detay ne oldu?' },
+  { id: 42, text: 'Bugün hangi anında en çok kendin oldun?' },
+  { id: 43, text: 'Bugün sana ilham veren bir şey gördün mü?' },
+  { id: 44, text: 'Bugün neye "hayır" diyebildin?' },
+  { id: 45, text: 'Bugün seni büyüten bir deneyim yaşadın mı?' },
+  { id: 46, text: 'Bugün hangi duyguyu kabul ettin?' },
+  { id: 47, text: 'Bugün kendine söylediğin en güzel şey neydi?' },
+  { id: 48, text: 'Bugün seni rahatsız eden bir düşünceyi nasıl yönettin?' },
+  { id: 49, text: 'Bugün seni şaşkına çeviren bir gerçek neydi?' },
+  { id: 50, text: 'Bugün hangi anında en çok "şimdi"de oldun?' },
+];
+
+export const getTodayQuestion = (): Question => {
+  const today = new Date();
+  const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000);
+  const questionIndex = dayOfYear % QUESTIONS.length;
+  return QUESTIONS[questionIndex];
+};
