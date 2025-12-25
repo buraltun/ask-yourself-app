@@ -108,30 +108,44 @@ export default function SettingsScreen() {
   };
 
   const handleTimeChange = (event: any, selectedDate?: Date) => {
-    setShowTimePicker(Platform.OS === 'ios');
+    if (Platform.OS === 'android') {
+      setShowTimePicker(false);
+    }
     
     if (selectedDate) {
       setSelectedTime(selectedDate);
-      
-      // Update settings
-      const hours = selectedDate.getHours();
-      const minutes = selectedDate.getMinutes();
-      const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-      
-      const newSettings = { ...settings, time: timeString };
-      setSettings(newSettings);
-      saveNotificationSettings(newSettings);
-      
-      // If notifications are enabled, reschedule
-      if (settings.enabled) {
-        scheduleDailyNotification(hours, minutes);
-        Alert.alert(
-          'Saat Güncellendi',
-          `Yeni hatırlatma saati: ${timeString}`,
-          [{ text: 'Tamam' }]
-        );
-      }
     }
+  };
+
+  const handleTimeSave = async () => {
+    const hours = selectedTime.getHours();
+    const minutes = selectedTime.getMinutes();
+    const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    
+    const newSettings = { ...settings, time: timeString };
+    setSettings(newSettings);
+    await saveNotificationSettings(newSettings);
+    
+    // If notifications are enabled, reschedule
+    if (settings.enabled) {
+      await scheduleDailyNotification(hours, minutes);
+      Alert.alert(
+        'Saat Güncellendi',
+        `Yeni hatırlatma saati: ${timeString}`,
+        [{ text: 'Tamam' }]
+      );
+    }
+    
+    setShowTimePicker(false);
+  };
+
+  const handleTimeCancel = () => {
+    // Reset to saved time
+    const [hours, minutes] = settings.time.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, 0, 0);
+    setSelectedTime(date);
+    setShowTimePicker(false);
   };
 
   const handleTestNotification = async () => {
