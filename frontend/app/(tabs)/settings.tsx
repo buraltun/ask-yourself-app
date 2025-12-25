@@ -25,6 +25,7 @@ import {
 import { NotificationSettings } from '../../types';
 import { useUser } from '../../contexts/UserContext';
 import { useRouter } from 'expo-router';
+import { useFocusEffect } from 'expo-router';
 
 export default function SettingsScreen() {
   const [settings, setSettings] = useState<NotificationSettings>({
@@ -40,6 +41,13 @@ export default function SettingsScreen() {
   useEffect(() => {
     loadSettings();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Ekrana her geldiğinde ayarları yeniden yükle
+      loadSettings();
+    }, [])
+  );
 
   const loadSettings = async () => {
     try {
