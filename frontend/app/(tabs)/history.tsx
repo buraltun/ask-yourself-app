@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getAllAnswers, deleteAnswer } from '../../utils/storage';
@@ -112,6 +113,7 @@ export default function HistoryScreen() {
   if (loading) {
     return (
       <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+        <StatusBar barStyle="dark-content" />
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#007AFF" />
         </View>
@@ -122,6 +124,7 @@ export default function HistoryScreen() {
   if (answers.length === 0) {
     return (
       <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+        <StatusBar barStyle="dark-content" />
         <View style={styles.emptyContainer}>
           <Ionicons name="calendar-outline" size={64} color="#ccc" />
           <Text style={styles.emptyTitle}>Henüz bir cevabın yok</Text>
@@ -135,6 +138,7 @@ export default function HistoryScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+      <StatusBar barStyle="dark-content" />
       <FlatList
         data={answers}
         renderItem={renderItem}
