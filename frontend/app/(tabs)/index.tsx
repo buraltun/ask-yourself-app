@@ -17,6 +17,7 @@ import { getTodayQuestion } from '../../utils/questions';
 import { saveAnswer, getTodayAnswer } from '../../utils/storage';
 import { formatDisplayDate, getTodayDateString } from '../../utils/dateHelper';
 import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from 'expo-router';
 
 export default function HomeScreen() {
   const [question] = useState(getTodayQuestion());
@@ -28,6 +29,12 @@ export default function HomeScreen() {
   useEffect(() => {
     loadTodayAnswer();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadTodayAnswer();
+    }, [])
+  );
 
   const loadTodayAnswer = async () => {
     try {
