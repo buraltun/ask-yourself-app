@@ -32,6 +32,8 @@ export default function SettingsScreen() {
   const [loading, setLoading] = useState(true);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [selectedTime, setSelectedTime] = useState(new Date());
+  const { user, signOut } = useUser();
+  const router = useRouter();
 
   useEffect(() => {
     loadSettings();
