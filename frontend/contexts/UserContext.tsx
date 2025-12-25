@@ -33,10 +33,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const signIn = async (newUser: User) => {
     try {
+      console.log('🔵 UserContext signIn called with:', newUser);
       await saveUser(newUser);
       setUser(newUser);
+      console.log('✅ UserContext user updated:', newUser);
     } catch (error) {
-      console.error('Error signing in:', error);
+      console.error('❌ Error signing in:', error);
       throw error;
     }
   };
