@@ -51,12 +51,13 @@ export default function AuthScreen() {
       };
 
       await signIn(user);
-      router.replace('/(tabs)');
+      setTimeout(() => {
+        router.replace('/(tabs)');
+      }, 100);
     } catch (error: any) {
       if (error.code !== 'ERR_CANCELED') {
         Alert.alert('Hata', 'Giriş yapılamadı. Lütfen tekrar dene.');
       }
-    } finally {
       setLoading(false);
     }
   };
