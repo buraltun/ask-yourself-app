@@ -134,7 +134,7 @@ export default function HistoryScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['bottom']}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <FlatList
         data={answers}
         renderItem={renderItem}
