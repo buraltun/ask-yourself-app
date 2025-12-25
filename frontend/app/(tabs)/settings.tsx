@@ -473,6 +473,35 @@ const styles = StyleSheet.create({
     padding: 16,
     marginTop: 12,
   },
+  timePickerButtons: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 16,
+  },
+  timePickerCancelButton: {
+    flex: 1,
+    padding: 14,
+    borderRadius: 8,
+    backgroundColor: '#f0f0f0',
+    alignItems: 'center',
+  },
+  timePickerCancelText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#666',
+  },
+  timePickerSaveButton: {
+    flex: 1,
+    padding: 14,
+    borderRadius: 8,
+    backgroundColor: '#007AFF',
+    alignItems: 'center',
+  },
+  timePickerSaveText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
+  },
   profileInfo: {
     paddingVertical: 12,
   },
