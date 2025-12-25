@@ -21,6 +21,16 @@ export default function AuthScreen() {
   const router = useRouter();
 
   const handleAppleSignIn = async () => {
+    // Web'de Apple Sign In desteklenmediği için
+    if (Platform.OS === 'web') {
+      Alert.alert(
+        'Web Sınırlaması',
+        'Apple Sign In gerçek cihazda çalışır. Misafir olarak devam edebilirsin.',
+        [{ text: 'Tamam' }]
+      );
+      return;
+    }
+    
     try {
       setLoading(true);
       
