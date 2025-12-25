@@ -44,6 +44,12 @@ export const requestNotificationPermissions = async (): Promise<boolean> => {
 
 export const scheduleDailyNotification = async (hour: number, minute: number): Promise<string | null> => {
   try {
+    // Web'de bildirimler desteklenmediği için atlıyoruz
+    if (Platform.OS === 'web') {
+      console.log(`Daily notification would be scheduled for ${hour}:${minute} on native device`);
+      return 'web-mock-id';
+    }
+    
     // Cancel all existing notifications first
     await Notifications.cancelAllScheduledNotificationsAsync();
 
@@ -57,11 +63,12 @@ export const scheduleDailyNotification = async (hour: number, minute: number): P
         data: { screen: 'home' },
       },
       trigger: {
+        type: 'daily',
         hour,
         minute,
         repeats: true,
         channelId: Platform.OS === 'android' ? 'daily-reminder' : undefined,
-      },
+      } as any,
     });
 
     return notificationId;
