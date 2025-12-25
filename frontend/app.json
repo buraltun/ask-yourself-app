@@ -1,17 +1,18 @@
 {
   "expo": {
-    "name": "frontend",
-    "slug": "frontend",
+    "name": "Ask Yourself",
+    "slug": "ask-yourself",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "frontend",
+    "scheme": "askyourself",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.dailyjournal.app",
-      "usesAppleSignIn": true
+      "bundleIdentifier": "com.askyourself.app",
+      "usesAppleSignIn": true,
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
